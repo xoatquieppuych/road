@@ -1,0 +1,26 @@
+name: Windows Runner
+
+on:
+  workflow_dispatch:
+
+jobs:
+  windows:
+    runs-on: windows-latest
+    timeout-minutes: 360
+
+    steps:
+      - name: Show Windows information
+        shell: pwsh
+        run: |
+          Write-Host "Windows runner started."
+          Get-ComputerInfo | Select-Object WindowsProductName, WindowsVersion, OsArchitecture
+          Write-Host "CPU:"
+          Get-CimInstance Win32_Processor | Select-Object Name, NumberOfCores
+          Write-Host "RAM:"
+          Get-CimInstance Win32_ComputerSystem | Select-Object TotalPhysicalMemory
+
+      - name: Keep runner alive
+        shell: pwsh
+        run: |
+          Write-Host "Runner is active. Maximum job time is 6 hours."
+          Start-Sleep -Seconds 21600
